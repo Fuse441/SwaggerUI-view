@@ -40,10 +40,10 @@ COPY --from=deps /usr/src/app/node_modules ./node_modules
 
 # คัดลอกไฟล์จาก `build`
 COPY --from=build /usr/src/app /usr/src/app
-COPY --from=build  /usr/src/app/package.json  /usr/src/app/package-lock.json ./
+COPY --from=build  /usr/src/app/dist ./
 
 # เปิดพอร์ต 4000
 EXPOSE 4000
 
 # คำสั่งเริ่มแอป
-CMD ["npm", "run", "serve:ssr:SwaggerUI-test"]
+CMD ["node", "dist/swagger-ui-test/server/server.mjs"]
