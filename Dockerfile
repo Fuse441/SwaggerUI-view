@@ -3,7 +3,7 @@ ARG NODE_VERSION=20.18.2
 FROM node:${NODE_VERSION}-alpine as base
 
 # ตั้งค่าที่ทำงาน
-WORKDIR /usr/src/app
+WORKDIR /app
 
 ################################################################################
 # ติดตั้ง dependencies
@@ -36,11 +36,11 @@ ENV NODE_ENV production
 
 
 # คัดลอก package.json และ node_modules จาก stage `deps`
-COPY --from=deps /usr/src/app/node_modules ./node_modules
+COPY --from=deps /app/node_modules ./node_modules
 
 # คัดลอกไฟล์จาก `build`
-COPY --from=build /usr/src/app /usr/src/app
-COPY --from=build  /usr/src/app/dist ./
+COPY --from=build /app /app
+COPY --from=build  /app/dist ./
 
 # เปิดพอร์ต 4000
 EXPOSE 4000
