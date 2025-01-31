@@ -40,6 +40,7 @@ COPY --from=deps /usr/src/app/node_modules ./node_modules
 
 # คัดลอกไฟล์จาก `build`
 COPY --from=build /usr/src/app /usr/src/app
+COPY --from=build  /usr/src/app/package.json  /usr/src/app/package-lock.json ./
 
 # เปิดพอร์ต 4000
 EXPOSE 4000
