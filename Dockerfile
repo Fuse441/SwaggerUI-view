@@ -33,8 +33,7 @@ FROM base as final
 # ใช้ production mode
 ENV NODE_ENV production
 
-# เปลี่ยน user เป็น node (ไม่ใช้ root เพื่อความปลอดภัย)
-USER node
+
 
 # คัดลอก package.json และ node_modules จาก stage `deps`
 COPY --from=deps /usr/src/app/node_modules ./node_modules
