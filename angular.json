@@ -17,6 +17,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": [
+              "swagger-ui-dist",
+              "axios",
+              "jszip"
+            ],
             "outputPath": "dist/swagger-ui-test",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -26,15 +31,19 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              "src/assets",
               {
                 "glob": "**/*",
                 "input": "public"
               }
             ],
             "styles": [
+              "node_modules/swagger-ui-dist/swagger-ui.css",
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+            "node_modules/swagger-ui-dist/swagger-ui-bundle.js"
+            ],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {
@@ -47,7 +56,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "2MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -103,5 +112,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "cbf4ba3c-9142-4a98-aa5a-f202fa25447d"
   }
 }
