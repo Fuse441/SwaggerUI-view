@@ -1,3 +1,7 @@
+:root {
+  --primary-color-btn : #1f9978;
+
+}
 .container-table{
     margin-top: 25px;
 }
@@ -30,7 +34,7 @@
   }
   
   button {
-    background-color: #007bff;
+    background-color: #1f9978;
     color: white;
     border: none;
     padding: 8px 12px;
@@ -45,8 +49,23 @@ button[disabled]{
   background-color: #cccccc;
   color: #666666;
 }
-  
-//   button:hover {
-//     background-color: #0056b3;
-//   }
-  
+
+.btn-download {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #1f9978 !important;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-download h1 {
+  font-size: 18px
+}
+.btn-download {
+  position: fixed;
+}

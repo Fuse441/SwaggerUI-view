@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { menuListService } from '../menu-list/menu-list.service';
 import  yaml from 'js-yaml';
 import { ActivatedRoute } from '@angular/router';
+import JSZip from 'jszip';
 @Component({
   selector: 'app-broker-swagger',
   templateUrl: "./broker-swagger.component.html",
@@ -11,7 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 export class BrokerSwaggerComponent implements OnInit, AfterViewInit {
   dataSwagger:any;
   findSwagger:any
-  foundItem:any
+  foundItem:any;
+  itemName:string = "";
   constructor(
     private renderer: Renderer2, 
     @Inject(PLATFORM_ID) private platformId: object,
@@ -32,7 +34,9 @@ export class BrokerSwaggerComponent implements OnInit, AfterViewInit {
             this.findSwagger = JSON.parse(this.findSwagger);
             
              this.foundItem = this.findSwagger.find((item: any) => item.name ===  data.replace(/['"]+/g, ''));
+             this.itemName = this.foundItem.name
              this.foundItem = yaml.load(this.foundItem.content)
+      
              console.log(this.foundItem)
             if (this.foundItem) {
               console.log('Found item:', this.foundItem);
@@ -49,6 +53,38 @@ export class BrokerSwaggerComponent implements OnInit, AfterViewInit {
     
     
   }
+  async downloadYAML() {
+    console.log(this.itemName);
+
+    const fileName = this.itemName.endsWith(".yaml") ? this.itemName : this.itemName + ".yaml";
+
+  
+    let fileContent;
+    try {
+        fileContent = typeof this.foundItem === "string" 
+            ? this.foundItem 
+            : yaml.dump(this.foundItem); 
+    } catch (error) {
+        console.error("YAML conversion error:", error);
+        return;
+    }
+
+    
+    const yamlBlob = new Blob([fileContent], { type: "text/yaml" });
+
+  
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(yamlBlob);
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+
+   
+    setTimeout(() => URL.revokeObjectURL(link.href), 100);
+
+  
+    document.body.removeChild(link);
+}
 
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {

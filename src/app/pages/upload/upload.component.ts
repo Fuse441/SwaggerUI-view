@@ -55,7 +55,7 @@ export class UploadComponent implements OnInit {
       const response = await this.uploadService.uploadFile(this.selectedFile);
       
       // ตรวจสอบประเภทของ response
-      console.log(response);
+      // console.log(response);
       if (response instanceof Blob) {
         // console.log('Blob size:', response.size); 
         // const arrayBuffer = await response.arrayBuffer(); 
@@ -65,7 +65,7 @@ export class UploadComponent implements OnInit {
       }
       
      const files = await this.extractZipFromResponse(response);
-      console.log("Files extracted:", files);
+      // console.log("Files extracted:", files);
       this.uploadService.setDataSwagger(files)
 
       let getDataSwagger =  this.uploadService.getDataSwagger()
@@ -90,11 +90,11 @@ export class UploadComponent implements OnInit {
   
   
   async extractZipFromResponse(response: ArrayBuffer) {
-    console.log("Response type:", typeof response);  
+    // console.log("Response type:", typeof response);  
   
     try {
       const zip = await JSZip.loadAsync(response);
-      console.log("Extracted zip content:", zip);
+      // console.log("Extracted zip content:", zip);
   
       const files: { name: string; content: string }[] = [];
   
@@ -112,6 +112,34 @@ export class UploadComponent implements OnInit {
       throw error;
     }
   }
+  async  downloadZIP() {
+    const zip = new JSZip();
+    
+    const getDataSwagger:any =  JSON.parse(this.uploadService.getDataSwagger()!)
+    console.log(getDataSwagger)
+    getDataSwagger && getDataSwagger!.forEach((element:any) => {
+       zip.file(`${element.name}`,`${element.content}`)
+    });
+   
+    
+    
+    console.log(zip.files)
   
+    // const imgData = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...";
+    // zip.file("image.png", imgData.split(',')[1], { base64: true });
+  
+ 
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+  
+   
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(zipBlob);
+    link.download = "Swagger.zip";
+    document.body.appendChild(link);
+    link.click();
+    
+   
+    document.body.removeChild(link);
+  }
   
 }

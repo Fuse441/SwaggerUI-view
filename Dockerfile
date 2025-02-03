@@ -30,20 +30,16 @@ RUN npm run build
 # สร้าง Final Image สำหรับ Production
 FROM base as final
 
-# ใช้ production mode
 ENV NODE_ENV production
 
 
 
-# คัดลอก package.json และ node_modules จาก stage `deps`
+
 COPY --from=deps /app/node_modules ./node_modules
 
-# คัดลอกไฟล์จาก `build`
-COPY --from=build /app /app
-COPY --from=build  /app/dist ./
+COPY --from=build /app ./
+COPY --from=build /app/dist ./
 
-# เปิดพอร์ต 4000
 EXPOSE 4000
 
-# คำสั่งเริ่มแอป
 CMD ["node", "dist/swagger-ui-test/server/server.mjs"]

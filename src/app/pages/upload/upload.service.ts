@@ -30,7 +30,7 @@ export class UploadService {
     localStorage.setItem(this.dataSwagger,JSON.stringify(data))
   }
   getDataSwagger(){
-    console.log( localStorage.getItem(this.dataSwagger))
+    // console.log( localStorage.getItem(this.dataSwagger))
     return localStorage.getItem(this.dataSwagger)
   }
   
