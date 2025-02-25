@@ -14,7 +14,7 @@ export class UploadComponent implements OnInit {
   uploadMessage: string = '';
   hasUpload:string = ""
   items: { name: string }[] = []; 
-
+  messageUpload:string = "";
   constructor(private uploadService:UploadService,private router: Router){}
 
   ngOnInit(): void {
@@ -46,12 +46,14 @@ export class UploadComponent implements OnInit {
   }
 
   async onUpload() {
+  
     if (!this.selectedFile) return;
   
     const formData = new FormData();
     formData.append('file', this.selectedFile);
-  
+    let snackbar = document.getElementById("snackbar")
     try {
+     
       const response = await this.uploadService.uploadFile(this.selectedFile);
       
       // ตรวจสอบประเภทของ response
@@ -73,7 +75,13 @@ export class UploadComponent implements OnInit {
       if (getDataSwagger) {
         try {
           this.items = JSON.parse(getDataSwagger); 
-          // console.log("log itme",this.items); 
+       
+        this.messageUpload = "อัพโหลดไฟล์เรียบร้อย"
+        snackbar!.className = "show"
+          
+          setTimeout(function() {
+            setTimeout(function(){ snackbar!.className = snackbar!.className.replace("show", ""); }, 3000);
+          })
         } catch (error) {
           console.error("Error parsing SwaggerData:", error);
         }
@@ -82,6 +90,14 @@ export class UploadComponent implements OnInit {
       }
     
     } catch (error) {
+         this.messageUpload = String(error)
+         
+      snackbar!.className = "show";
+       
+
+      setTimeout(function() {
+        setTimeout(function(){ snackbar!.className = snackbar!.className.replace("show", ""); }, 3000);
+      })
       console.error('Upload failed:', error);
     }
   }
