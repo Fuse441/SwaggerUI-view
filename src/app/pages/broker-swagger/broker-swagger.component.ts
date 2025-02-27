@@ -37,11 +37,11 @@ export class BrokerSwaggerComponent implements OnInit, AfterViewInit {
              this.itemName = this.foundItem.name
              this.foundItem = yaml.load(this.foundItem.content)
       
-             console.log(this.foundItem)
+             
             if (this.foundItem) {
-              console.log('Found item:', this.foundItem);
+              
             } else {
-              console.log('Item with name not found');
+              
             }
           }
         }
@@ -54,7 +54,7 @@ export class BrokerSwaggerComponent implements OnInit, AfterViewInit {
     
   }
   async downloadYAML() {
-    console.log(this.itemName);
+    
 
     const fileName = this.itemName.endsWith(".yaml") ? this.itemName : this.itemName + ".yaml";
 

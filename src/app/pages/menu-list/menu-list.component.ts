@@ -24,7 +24,7 @@ export class MenuListComponent implements OnInit {
     if (temp) {
       try {
         this.items = JSON.parse(temp); 
-        // console.log("log itme",this.items); 
+        // 
       } catch (error) {
         console.error("Error parsing SwaggerData:", error);
       }

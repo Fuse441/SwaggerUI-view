@@ -69,7 +69,14 @@ button[disabled]{
 .btn-download {
   position: fixed;
 }
-
+.input-file{
+  margin-bottom: 25px;
+  width: 100%;
+}
+#snackbar {
+  white-space: pre-line;  /* รองรับการแสดงผลบรรทัดใหม่ */
+  word-wrap: break-word;  /* รองรับการแบ่งคำเมื่อเกินขนาด */
+}
 #snackbar {
   visibility: hidden; /* Hidden by default. Visible on click */
   min-width: 250px; /* Set a default minimum width */

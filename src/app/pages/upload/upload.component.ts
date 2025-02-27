@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UploadService } from './upload.service';
 import JSZip  from 'jszip'
 import {  Router } from '@angular/router';
+import axios, { isAxiosError } from 'axios';
 @Component({
   selector: 'app-upload',
   imports: [CommonModule],
@@ -15,6 +16,7 @@ export class UploadComponent implements OnInit {
   hasUpload:string = ""
   items: { name: string }[] = []; 
   messageUpload:string = "";
+  @ViewChild('input-file') inputFile?: ElementRef;
   constructor(private uploadService:UploadService,private router: Router){}
 
   ngOnInit(): void {
@@ -38,40 +40,52 @@ export class UploadComponent implements OnInit {
       console.error('API error:', error);
     }
   }
+  test(event: Event) {
+  
+   
+    
+
+      
+
+   
+  }
   onFileSelected(event: Event) {
+  
+    
     const input = event.target as HTMLInputElement;
+    
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
     }
   }
 
   async onUpload() {
-  
+    
     if (!this.selectedFile) return;
   
     const formData = new FormData();
     formData.append('file', this.selectedFile);
     let snackbar = document.getElementById("snackbar")
     try {
-     
+      
       const response = await this.uploadService.uploadFile(this.selectedFile);
       
       // ตรวจสอบประเภทของ response
-      // console.log(response);
+      // 
       if (response instanceof Blob) {
-        // console.log('Blob size:', response.size); 
+        // 
         // const arrayBuffer = await response.arrayBuffer(); 
-        // console.log('ArrayBuffer byteLength:', arrayBuffer.byteLength); 
+        // 
       } else {
         console.error('Response is not a Blob or ArrayBuffer');
       }
       
      const files = await this.extractZipFromResponse(response);
-      // console.log("Files extracted:", files);
+      // 
       this.uploadService.setDataSwagger(files)
 
       let getDataSwagger =  this.uploadService.getDataSwagger()
-    
+     
       if (getDataSwagger) {
         try {
           this.items = JSON.parse(getDataSwagger); 
@@ -89,16 +103,20 @@ export class UploadComponent implements OnInit {
         console.warn("No SwaggerData found in localStorage.");
       }
     
-    } catch (error) {
-         this.messageUpload = String(error)
+    } catch (error:any) {
+    
+     
+    this.messageUpload = `${error?.message}\n\n${error?.detail}`; 
          
-      snackbar!.className = "show";
-       
-
-      setTimeout(function() {
-        setTimeout(function(){ snackbar!.className = snackbar!.className.replace("show", ""); }, 3000);
-      })
-      console.error('Upload failed:', error);
+        snackbar!.className = "show";
+         
+  
+        setTimeout(function() {
+          setTimeout(function(){ snackbar!.className = snackbar!.className.replace("show", ""); }, 3000);
+        })
+        console.error('Upload failed:', error);
+      
+      
     }
   }
   
@@ -106,11 +124,11 @@ export class UploadComponent implements OnInit {
   
   
   async extractZipFromResponse(response: ArrayBuffer) {
-    // console.log("Response type:", typeof response);  
+    // 
   
     try {
       const zip = await JSZip.loadAsync(response);
-      // console.log("Extracted zip content:", zip);
+      // 
   
       const files: { name: string; content: string }[] = [];
   
@@ -132,14 +150,14 @@ export class UploadComponent implements OnInit {
     const zip = new JSZip();
     
     const getDataSwagger:any =  JSON.parse(this.uploadService.getDataSwagger()!)
-    console.log(getDataSwagger)
+    
     getDataSwagger && getDataSwagger!.forEach((element:any) => {
        zip.file(`${element.name}`,`${element.content}`)
     });
    
     
     
-    console.log(zip.files)
+    
   
     // const imgData = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...";
     // zip.file("image.png", imgData.split(',')[1], { base64: true });
