@@ -1,13 +1,14 @@
+
 {
   "name": "swagger-ui-test",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:SwaggerUI-test": "node dist/swagger-ui-test/server/server.mjs"
+    "serve:ssr:SwaggerUI-test": "set test=eiei && node dist/swagger-ui-test/server/server.mjs"
   },
   "private": true,
   "dependencies": {
