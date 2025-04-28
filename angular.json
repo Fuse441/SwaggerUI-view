@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "SwaggerUI-test": {
+    "SwaggerUI": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -84,10 +84,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "SwaggerUI-test:build:production"
+              "buildTarget": "SwaggerUI:build:production"
             },
             "development": {
-              "buildTarget": "SwaggerUI-test:build:development"
+              "buildTarget": "SwaggerUI:build:development"
             }
           },
           "defaultConfiguration": "development"

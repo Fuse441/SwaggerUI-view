@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'SwaggerUI-test' title`, () => {
+  it(`should have the 'SwaggerUI' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('SwaggerUI-test');
+    expect(app.title).toEqual('SwaggerUI');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, SwaggerUI-test');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, SwaggerUI');
   });
 });
