@@ -42,6 +42,15 @@
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
   }
+.remove {
+    background-color: #a02920;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
   
   button:disabled,
 button[disabled]{

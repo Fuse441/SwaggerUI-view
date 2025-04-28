@@ -16,7 +16,7 @@ export class UploadService {
      
   
     try {
-      const response = await axios.post(`${this.apiUrl}/excel`, formData, {
+      const response = await axios.post(`${this.apiUrl}/generate`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

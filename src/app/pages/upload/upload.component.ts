@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { UploadService } from './upload.service';
 import JSZip  from 'jszip'
 import {  Router } from '@angular/router';
@@ -16,23 +16,57 @@ export class UploadComponent implements OnInit {
   hasUpload:string = ""
   items: { name: string }[] = []; 
   messageUpload:string = "";
+  isBrowser: boolean = false;
   @ViewChild('input-file') inputFile?: ElementRef;
-  constructor(private uploadService:UploadService,private router: Router){}
+  uploadedFileName: string | null = null;
+
+  constructor(private uploadService:UploadService,private router: Router,@Inject(PLATFORM_ID) private platformId: Object){}
 
   ngOnInit(): void {
-    let getDataSwagger =  this.uploadService.getDataSwagger()
-      if (getDataSwagger) {
-        try {
-          this.hasUpload = "Has Data in Local"
-          this.items = JSON.parse(getDataSwagger); 
-        } catch (error) {
-          console.error("Error parsing SwaggerData:", error);
-        }
-      } else {
-        console.warn("No SwaggerData found in localStorage.");
-      }
-  }
+    this.isBrowser = isPlatformBrowser(this.platformId);
 
+    if (this.isBrowser) {
+      try {
+        const getDataSwagger = localStorage.getItem("SwaggerData");
+        if (getDataSwagger) {
+          this.hasUpload = "Has Data in Local";
+          this.items = JSON.parse(getDataSwagger);
+        } else {
+          console.warn("No SwaggerData found in localStorage.");
+        }
+      } catch (error) {
+        console.error("Error parsing SwaggerData:", error);
+      }
+    }
+  }
+  
+
+  
+  
+  
+  clearFile() {
+    this.selectedFile = null;
+    this.uploadedFileName = null;
+    const input = document.getElementById('input-file') as HTMLInputElement;
+    if (input) {
+      input.value = ''; 
+    }
+  }
+  
+  
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+  
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    if (event.dataTransfer?.files.length) {
+      const file = event.dataTransfer.files[0];
+      this.selectedFile = file;
+      this.uploadedFileName = file.name;
+    }
+  }
+  
   async checkAPI(data:any) {
     try {
       this.router.navigate(['/swaggerUI'], { queryParams: { data: JSON.stringify(data) } });
@@ -40,22 +74,18 @@ export class UploadComponent implements OnInit {
       console.error('API error:', error);
     }
   }
-  test(event: Event) {
-  
-   
-    
 
-      
-
-   
-  }
   onFileSelected(event: Event) {
+  console.log("event ==> ", this.selectedFile,
+    this.uploadedFileName);
   
     
     const input = event.target as HTMLInputElement;
-    
-    if (input.files && input.files.length > 0) {
+    console.log("input.files ==> ", input.files);
+
+    if (input.files && input.files.length) {
       this.selectedFile = input.files[0];
+      this.uploadedFileName = input.files[0].name;
     }
   }
 
